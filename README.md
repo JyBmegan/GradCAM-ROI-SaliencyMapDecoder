@@ -134,8 +134,10 @@ The script uses a modular approach to instantiate neural networks based on the f
 
 This section explains how to interpret the generated CSV files and images, based on the specific output formats of the pipeline.
 
-### 5.1 Main Data Table (`GradCAM_Results.csv`)
+### 5.1 Main Data Table (`GradCAM_Results.zip`)
 This file contains granular, per-image raw data. Each row represents one image processed by one model under one condition.
+
+**Important**: Restricted by github, this folder is saved to Google Drive: https://drive.google.com/file/d/1U_cSf5PM6kpv2rkW1ZSyXscHez-zRVEe/view?usp=sharing
 
 | Column Header | Description | Example / Interpretation |
 | :--- | :--- | :--- |
@@ -181,7 +183,7 @@ This file aggregates the raw data to show the Mean and Standard Deviation for ea
 This pipeline generates three types of visualizations to help qualitatively assess model behavior.
 
 ### 6.1 Grad-CAM Heatmaps
-**Location**: `Results/Automated_Analysis/GradCAM_Images/`
+**Location**: `Results/GradCAM_Images/`
 
 **Style**: "Jet" colormap overlay (Red = High Attention, Blue = Low Attention).
 
@@ -191,7 +193,7 @@ These images are generated without bounding boxes to ensure clean figures for pu
 
 ### 6.2 Vertical Trend Plots
 
-**Location**: `Results/Automated_Analysis/Trend_Plots/`
+**Location**: `Results/Trend_Plots/`
 
 **X-Axis**: Accumulated Activation (Saliency Strength).
 
@@ -208,12 +210,12 @@ These images are generated without bounding boxes to ensure clean figures for pu
 * If the black curve's peak aligns with the **Red Band**, the model is primarily focusing on the Mouth.
 
 <p align="center">
-  <img src="Results/Automated_Analysis/Trend_Plots/SE-Conv-L1_FaceBased_R4/E/1_trend.jpg" width="400">
+  <img src="Results/Trend_Plots/SE-Conv-L1_FaceBased_R4/E/1_trend.jpg" width="400">
 </p>
 
 ### 6.3 Summary Chart
 
-**Location**: `Results/Automated_Analysis/Summary_Chart.png`
+**Location**: `Results/Summary_Chart.png`
 
 **Type**: Bar Chart with Error Bars.
 
@@ -225,5 +227,5 @@ These images are generated without bounding boxes to ensure clean figures for pu
 * *Example*: In the 'E' (Eyes Masked) group, if the Red bar is significantly higher than the others, it confirms the hypothesis that the mouth becomes the primary feature.
 
 <p align="center">
-  <img src="Results/Automated_Analysis/Summary_Chart.png" width="800" title="Summary Statistics">
+  <img src="Results/Summary_Chart.png" width="800" title="Summary Statistics">
 </p>
