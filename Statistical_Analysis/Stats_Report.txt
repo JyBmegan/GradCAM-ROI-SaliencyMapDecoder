@@ -1,0 +1,37 @@
+======================================================================
+Grad-CAM ROI Statistical Analysis Report
+======================================================================
+
+ROI Definitions:
+  Eyes:  x=[52, 171], y=[70, 99]
+  Nose:  x=[52, 171], y=[120, 149]
+  Mouth: x=[52, 171], y=[169, 199]
+
+Heatmap Normalization: Min-Max normalization (0-1) per image
+ROI Weight Calculation: PoS = sum(ROI) / sum(entire image)
+DiagnosticRatio: (Eyes+Mouth) / (Eyes+Nose+Mouth)
+
+----------------------------------------------------------------------
+KEY FINDINGS
+----------------------------------------------------------------------
+
+1. FaceBased vs ObjectBased Pretraining (Full Face):
+   FC-L1   : Δ=-0.0087, d=-0.638 (medium), p_FDR=0.0588
+   FC-L1   : Δ=+0.2454, d=+5.045 (large), p_FDR=0.0000 ***
+   FC-L1   : Δ=-0.1823, d=-4.121 (large), p_FDR=0.0000 ***
+   FC-L1   : Δ=-0.1017, d=-4.140 (large), p_FDR=0.0000 ***
+   FC-L2   : Δ=+0.3527, d=+23.693 (large), p_FDR=0.0000 ***
+   FC-L2   : Δ=+0.0486, d=+1.305 (large), p_FDR=0.0005 ***
+   FC-L2   : Δ=+0.1604, d=+4.201 (large), p_FDR=0.0000 ***
+   FC-L2   : Δ=+0.2172, d=+4.734 (large), p_FDR=0.0000 ***
+   FC-L3   : Δ=-0.1078, d=-0.836 (large), p_FDR=0.0146 *
+   FC-L3   : Δ=+0.0479, d=+0.217 (small), p_FDR=0.5392
+   FC-L3   : Δ=-0.1446, d=-0.468 (small), p_FDR=0.2346
+   FC-L3   : Δ=+0.1759, d=+1.309 (large), p_FDR=0.0002 ***
+   FC-L3   : Δ=+0.0198, d=+0.071 (negligible), p_FDR=0.8346
+
+2. Effect Size Interpretation:
+   d ≥ 0.8 = large effect   |   d ≥ 0.5 = medium   |   d ≥ 0.2 = small
+
+======================================================================
+Full report content above was printed to console during execution.
