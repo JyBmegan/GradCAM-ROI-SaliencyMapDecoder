@@ -1,5 +1,16 @@
 # Grad-CAM Analysis & Saliency Statistics Pipeline
 
+<p align="center">
+    <a href="https://jybmegan.github.io/SE-AlexNet/"><img src="https://img.shields.io/badge/Project-Page-blue" alt="Project Page"></a>
+    <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-green" alt="License"></a>
+</p>
+
+
+<p align="center">
+    <a href="./0_InputImages/"><img src="https://img.shields.io/badge/Dataset-Github-orange" alt="Dataset: DFEW"></a>
+    <a href="https://huggingface.co/JiayuMBao/SE-AlexNet"><img src="https://img.shields.io/badge/Model%20Weights-Hugging%20Face-yellow" alt="Model Weights: Hugging Face"></a>
+</p>
+
 ## 1. Mathematical Formulation
 
 This pipeline quantifies the visual attention of Convolutional Neural Networks (CNNs) using Grad-CAM (Gradient-weighted Class Activation Mapping) and calculates the **Proportion of Saliency** for specific Regions of Interest (ROIs).
@@ -136,8 +147,6 @@ This section explains how to interpret the generated CSV files and images, based
 
 ### 5.1 Main Data Table (`GradCAM_Results.zip`)
 This file contains granular, per-image raw data. Each row represents one image processed by one model under one condition.
-
-**Important**: Restricted by github, this folder is saved to Google Drive: https://drive.google.com/file/d/1U_cSf5PM6kpv2rkW1ZSyXscHez-zRVEe/view?usp=sharing
 
 | Column Header | Description | Example / Interpretation |
 | :--- | :--- | :--- |
