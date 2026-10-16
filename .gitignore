@@ -1,2 +1,8 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+~$*
+* copy*
 All_Models_Collection/
-Results/Datapoints.zip
+Results/Datapoints/

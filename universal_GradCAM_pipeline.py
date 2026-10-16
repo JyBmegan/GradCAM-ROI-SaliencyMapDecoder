@@ -312,27 +312,27 @@ def main():
         
         config = parse_model_config(fname)
         
+        checkpoint = torch.load(model_path, map_location=device)
+        if isinstance(checkpoint, dict) and 'state_dict' in checkpoint:
+            checkpoint = checkpoint['state_dict']
+        if not isinstance(checkpoint, dict):
+            raise TypeError(f"{fname}: checkpoint does not contain a state dictionary")
+
         if config['arch'] == 'VGG16':
             model = UniversalVGG16(num_classes=8)
-            model.to(device)
-            try:
-                model.load_state_dict(torch.load(model_path, map_location=device), strict=False)
-            except Exception: continue
         else:
-            ratios_to_try = [config['reduction']] + [4, 16, 32, 8, 2]
-            ratios_to_try = sorted(set(ratios_to_try), key=ratios_to_try.index)
-            model = None
-            for r in ratios_to_try:
-                try:
-                    temp_model = UniversalSEAlexNet(num_classes=8, se_pos=config['pos'], reduction=r)
-                    temp_model.to(device)
-                    temp_model.load_state_dict(torch.load(model_path, map_location=device), strict=False)
-                    model = temp_model
-                    break 
-                except RuntimeError as e:
-                    if "size mismatch" in str(e): continue
-                    else: break
-            if model is None: continue
+            model = UniversalSEAlexNet(
+                num_classes=8,
+                se_pos=config['pos'],
+                reduction=config['reduction'],
+            )
+        model.to(device)
+        try:
+            model.load_state_dict(checkpoint, strict=True)
+        except RuntimeError as exc:
+            raise RuntimeError(
+                f"{fname}: the filename configuration does not match the checkpoint"
+            ) from exc
 
         model.eval()
         
