@@ -1,65 +1,75 @@
 # Grad-CAM ROI Saliency Analysis
 
-面孔刺激、Grad-CAM 流程、逐图 ROI 显著性表，以及论文中面孔/物体预训练 SE-AlexNet 对比的统计分析。
+Grad-CAM heatmaps and region-of-interest (ROI) saliency analysis for the SE-AlexNet paper. This repository reproduces the paper's Grad-CAM results for the AlexNet models: the proportion of saliency in the eyes, nose, and mouth, and the face- vs object-pretraining comparisons.
 
-## 复现论文 ROI 统计
+## Reproduce
 
 ```bash
 pip install -r requirements.txt
+```
+
+### ROI statistics (paper tables)
+
+```bash
 python3 analyze_paper_roi.py
 ```
 
-脚本读取 `Results/GradCAM_Results.csv`，选取两个 `SE-FC-L3` 压缩比 16 模型的完整面孔图像（各 21 张），计算诊断比率与各 ROI 显著性，并输出：
+Reads `Results/GradCAM_Results.csv`, selects the two `SE-FC-L3` reduction-16 models (face- and object-pretrained) on the 21 full-face images, and writes:
 
-| 输出 | 内容 |
+| Output | Content |
 | --- | --- |
-| `Results/Paper_ROI_Intermediate_Data.csv` | 42 张图像的 ROI 数据与诊断比率 |
-| `Results/Paper_ROI_Summary.csv` | 各指标的 N、均值、SD |
-| `Results/Paper_ROI_Statistics.csv` | 面孔 vs 物体的 Welch t 检验与合并 SD 的 Cohen's d |
-| `Results/Paper_ROI_Occlusion_Statistics.csv` | 面孔预训练 `SE-FC-L3`-R16 模型的完整 vs 遮挡配对比较 |
+| `Results/Paper_ROI_Intermediate_Data.csv` | Per-image ROI proportions and diagnostic ratio (42 images) |
+| `Results/Paper_ROI_Summary.csv` | N, mean, and SD per measure |
+| `Results/Paper_ROI_Statistics.csv` | Face vs object Welch t-test and pooled-SD Cohen's d |
+| `Results/Paper_ROI_Occlusion_Statistics.csv` | Full vs occluded paired comparisons for the face-pretrained model |
 
-## 重新计算 Grad-CAM 与全部 ROI
+The diagnostic ratio is `(eyes + mouth) / (eyes + nose + mouth)`.
 
-把模型权重放入 `All_Models_Collection/`（文件名与 `Results/GradCAM_Results.csv` 中的 `ModelFile` 一致），然后运行：
+### Heatmaps and full ROI data
+
+This step needs the model weights. Download them into `All_Models_Collection/` (filenames must match the `ModelFile` column), then run:
 
 ```bash
 python3 universal_GradCAM_pipeline.py
 ```
 
-## 输入
+This recomputes the Grad-CAM heatmaps, per-ROI saliency, and trend plots for every model, mask condition, and image, and rewrites `Results/GradCAM_Results.csv`.
 
-- `Results/GradCAM_Results.csv`：72 个模型 × 4 个刺激条件 × 21 张图像 = 6048 行。
-- `input_images/Full|E|N|M`：完整与眼/鼻/口遮挡的面孔图像。
-- `All_Models_Collection/`：模型权重（发布在 [Hugging Face](https://huggingface.co/JiayuMBao/SE-AlexNet)）。
+## Inputs
 
-## ROI 定义
+| Path | Content |
+| --- | --- |
+| `Results/GradCAM_Results.csv` | 72 models × 4 mask conditions × 21 images (6048 rows) |
+| `input_images/` (`Full`, `E`, `N`, `M`) | Full and eye/nose/mouth-occluded faces |
+| `All_Models_Collection/` | Model weights from [Hugging Face](https://huggingface.co/JiayuMBao/SE-AlexNet) |
 
-图像缩放到 224 × 224 像素，坐标以左上角为原点。
+## Formulas
 
-| 区域 | X | Y |
-| --- | ---: | ---: |
-| 眼 | 52–171 | 70–99 |
-| 鼻 | 52–171 | 120–149 |
-| 嘴 | 52–171 | 169–199 |
-
-## 公式
-
-类别 $c$ 的 Grad-CAM 图：
+The Grad-CAM localization map for class $c$:
 
 $$
-L_{Grad-CAM}^{c}=\operatorname{ReLU}\Big(\sum_k \alpha_k^c A^k\Big),
+L_{Grad-CAM}^{c}=\mathrm{ReLU}\Big(\sum_k \alpha_k^c A^k\Big),
 \qquad
 \alpha_k^c=\frac1Z\sum_i\sum_j\frac{\partial y^c}{\partial A_{ij}^k}
 $$
 
-区域 $R$ 的显著性占比（Proportion of Saliency）：
+The proportion of saliency in region $R$:
 
 $$
 PoS_R=\frac{\sum_{(x,y)\in R}L(x,y)}{\sum_{x,y}L(x,y)}
 $$
 
-诊断比率（眼与嘴占三处 ROI 总显著性之比）：
+The diagnostic ratio (eyes + mouth over all three ROIs):
 
 $$
 \frac{PoS_{eyes}+PoS_{mouth}}{PoS_{eyes}+PoS_{nose}+PoS_{mouth}}
 $$
+
+## Related repositories
+
+- Model training and prediction: [SE-AlexNet](https://github.com/JyBmegan/SE-AlexNet)
+- Psychometric-curve fitting (PSE): [PsychometricFittingCurve](https://github.com/JyBmegan/PsychometricFittingCurve)
+
+## Citation
+
+<!-- Citation to be added -->
