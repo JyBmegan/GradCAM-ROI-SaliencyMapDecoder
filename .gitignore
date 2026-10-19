@@ -10,3 +10,22 @@ Results/GradCAM_Images/
 Results/Trend_Plots/
 organize_models.py
 organize_data.py
+
+# Files not for the public code repository
+*.xls
+*.xlsx
+*.docx
+*.pptx
+*.pdf
+*.fig
+*.pth
+*.pt
+*.ckpt
+private/
+legacy/
+.vscode/
+Results/GradCAM_Results.csv
+Results/ROI_Trend_Stats.csv
+Results/Summary_Chart.png
+Results/Summary_Statistics.csv
+universal_GradCAM_pipeline.py

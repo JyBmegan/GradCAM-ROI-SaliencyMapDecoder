@@ -32,7 +32,7 @@ def main() -> None:
     parser.add_argument(
         "--input",
         type=Path,
-        default=repository_root / "Results" / "GradCAM_Results.csv",
+        default=repository_root / "Results" / "Paper_GradCAM_Input.csv",
     )
     parser.add_argument(
         "--output",
@@ -46,9 +46,18 @@ def main() -> None:
     missing = required.difference(data.columns)
     if missing:
         raise ValueError(f"Missing columns: {sorted(missing)}")
-    if len(data) != 6048 or data["ModelFile"].nunique() != 72:
+    expected_groups = {
+        (MODEL_FILES["FaceBased"], condition)
+        for condition in ["Full", "E", "M", "N"]
+    }
+    expected_groups.add((MODEL_FILES["ObjectBased"], "Full"))
+    actual_groups = set(
+        data[["ModelFile", "Condition"]].itertuples(index=False, name=None)
+    )
+    if len(data) != 105 or actual_groups != expected_groups:
         raise ValueError(
-            "Expected 6048 rows from 72 models, four conditions, and 21 images"
+            "Expected 105 rows: four conditions for the face-pretrained model "
+            "and the Full condition for the object-pretrained model"
         )
     group_sizes = data.groupby(["ModelFile", "Condition"]).size()
     if not group_sizes.eq(21).all():
@@ -164,7 +173,7 @@ def main() -> None:
     pd.DataFrame(occlusion_rows).to_csv(
         args.output / "Paper_ROI_Occlusion_Statistics.csv", index=False
     )
-    print("Validated 6048 rows and 21 selected images per pretraining condition.")
+    print("Validated 105 paper-scope rows and 21 selected images per group.")
     print(f"Wrote manuscript ROI tables to {args.output}")
 
 
